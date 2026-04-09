@@ -16,7 +16,7 @@ services:
       - internal
 
   server:
-    image: ghcr.io/paperclipai/paperclip:latest
+    image: ghcr.io/cafaroo/paperclip:latest
     environment:
       DATABASE_URL: postgres://paperclip:${POSTGRES_PASSWORD:-paperclip}@db:5432/paperclip
       PORT: "3100"
@@ -29,7 +29,7 @@ services:
       ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
     volumes:
       - paperclip-data:/paperclip
-      - /data/makebelieve:/home/makebelieve
+      - nas-companies:/home/companies
     depends_on:
       db:
         condition: service_healthy
@@ -46,6 +46,12 @@ services:
 volumes:
   pgdata:
   paperclip-data:
+  nas-companies:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=nas1.internal,rw,nfsvers=4,soft,timeo=30"
+      device: ":/paperclip"
 
 networks:
   internal:
