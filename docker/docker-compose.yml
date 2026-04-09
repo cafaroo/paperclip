@@ -29,8 +29,11 @@ services:
       PAPERCLIP_DEPLOYMENT_EXPOSURE: "private"
       PAPERCLIP_PUBLIC_URL: "${PAPERCLIP_PUBLIC_URL:-http://localhost:3100}"
       BETTER_AUTH_SECRET: "${BETTER_AUTH_SECRET:?BETTER_AUTH_SECRET must be set}"
+      PAPERCLIP_AGENT_JWT_SECRET: "${PAPERCLIP_AGENT_JWT_SECRET:?PAPERCLIP_AGENT_JWT_SECRET must be set}"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
     volumes:
       - paperclip-data:/paperclip
+      - /home/gustaf/Projects/MakeBelieve/paperclip:/home/makebelieve
     depends_on:
       db:
         condition: service_healthy

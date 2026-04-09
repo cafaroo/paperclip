@@ -97,9 +97,10 @@ export function parseGeminiJsonl(stdout: string) {
 
     const type = asString(event.type, "").trim();
 
-    if (type === "assistant") {
-      messages.push(...collectMessageText(event.message));
-      const messageObj = parseObject(event.message);
+    if (type === "assistant" || (type === "message" && asString(event.role, "").trim() === "assistant")) {
+      const messagePayload = type === "message" ? event : event.message;
+      messages.push(...collectMessageText(messagePayload));
+      const messageObj = parseObject(type === "message" ? event : event.message);
       const content = Array.isArray(messageObj.content) ? messageObj.content : [];
       for (const partRaw of content) {
         const part = parseObject(partRaw);
@@ -185,7 +186,7 @@ export function isGeminiUnknownSessionError(stdout: string, stderr: string): boo
     .filter(Boolean)
     .join("\n");
 
-  return /unknown\s+session|session\s+.*\s+not\s+found|resume\s+.*\s+not\s+found|checkpoint\s+.*\s+not\s+found|cannot\s+resume|failed\s+to\s+resume/i.test(
+  return /unknown\s+session|session\s+.*\s+not\s+found|resume\s+.*\s+not\s+found|checkpoint\s+.*\s+not\s+found|cannot\s+resume|failed\s+to\s+resume|invalid\s+session\s+identifier|error\s+resuming\s+session/i.test(
     haystack,
   );
 }
