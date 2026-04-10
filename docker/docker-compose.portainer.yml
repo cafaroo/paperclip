@@ -29,7 +29,8 @@ services:
       ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
     volumes:
       - paperclip-data:/paperclip
-      - /data/makebelieve:/home/makebelieve
+      - /data/paperclip-companies:/paperclip/instances/default/companies
+      - /home/companies:/home/companies
     depends_on:
       db:
         condition: service_healthy
