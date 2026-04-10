@@ -59,9 +59,10 @@ export function buildOpenCodeLocalConfig(v: CreateConfigValues): Record<string, 
   if (v.model) ac.model = v.model;
   if (v.thinkingEffort) ac.variant = v.thinkingEffort;
   ac.dangerouslySkipPermissions = v.dangerouslySkipPermissions;
-  // OpenCode sessions can run until the CLI exits naturally; keep timeout disabled (0)
-  // and rely on graceSec for termination handling when a timeout is configured elsewhere.
-  ac.timeoutSec = 0;
+  // Default 10-minute timeout so a hung provider (e.g. a flaky z.ai endpoint) cannot
+  // leak zombie processes indefinitely. Individual agents can still override this in
+  // their adapterConfig.timeoutSec if they need longer runs.
+  ac.timeoutSec = 600;
   ac.graceSec = 20;
   const env = parseEnvBindings(v.envBindings);
   const legacy = parseEnvVars(v.envVars);
