@@ -31,6 +31,7 @@ services:
       - paperclip-data:/paperclip
       - /data/paperclip-companies:/paperclip/instances/default/companies
       - /home/companies:/home/companies
+      - /home/companies/makebelieve/workspace:/home/makebelieve
     depends_on:
       db:
         condition: service_healthy
