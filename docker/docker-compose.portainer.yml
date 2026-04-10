@@ -29,7 +29,7 @@ services:
       ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
     volumes:
       - paperclip-data:/paperclip
-      - nas-companies:/home/companies
+      - /data/makebelieve:/home/makebelieve
     depends_on:
       db:
         condition: service_healthy
@@ -46,12 +46,6 @@ services:
 volumes:
   pgdata:
   paperclip-data:
-  nas-companies:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=nas1.internal,rw,nfsvers=4,soft,timeo=30"
-      device: ":/paperclip"
 
 networks:
   internal:
